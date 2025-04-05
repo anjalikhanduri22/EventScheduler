@@ -41,4 +41,29 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+//update an event by id
+
+router.put("/:id", async (req, res) => {
+  const eventId = req.params.id;
+  const { title, date, reminder } = req.body;
+  console.log("reminder", reminder);
+  try {
+    //find the event in the database using id
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    //update the event properties
+    event.date = date;
+    event.title = title;
+    event.reminder = reminder;
+    console.log("event updated");
+    await event.save();
+    res.json(event);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

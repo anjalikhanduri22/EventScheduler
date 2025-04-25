@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Event = require("../models/event");
+const { userAuth } = require("../middlewares/auth");
+const { adminAuth } = require("../middlewares/adminAuth");
 
 //get all events
 
-router.get("/", async (req, res) => {
+router.get("/events", async (req, res) => {
   try {
     const events = await Event.find();
     res.json(events);
@@ -14,11 +16,14 @@ router.get("/", async (req, res) => {
 });
 
 //create a new event
-router.post("/", async (req, res) => {
+
+router.post("/admin/event", adminAuth, async (req, res) => {
   const event = new Event({
     title: req.body.title,
     date: req.body.date,
-    reminder: req.body.reminder || false,
+    description: req.body.description,
+    location: req.body.location,
+    imageUrl: req.body.imageUrl,
   });
   try {
     const newEvent = await event.save();
@@ -30,7 +35,7 @@ router.post("/", async (req, res) => {
 
 //delete an event
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", adminAuth, async (req, res) => {
   try {
     console.log("delete route called");
     await Event.findByIdAndDelete(req.params.id);
@@ -43,10 +48,10 @@ router.delete("/:id", async (req, res) => {
 
 //update an event by id
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", adminAuth, async (req, res) => {
   const eventId = req.params.id;
-  const { title, date, reminder } = req.body;
-  console.log("reminder", reminder);
+  const { title, date } = req.body;
+
   try {
     //find the event in the database using id
     const event = await Event.findById(eventId);
@@ -57,7 +62,7 @@ router.put("/:id", async (req, res) => {
     //update the event properties
     event.date = date;
     event.title = title;
-    event.reminder = reminder;
+
     console.log("event updated");
     await event.save();
     res.json(event);

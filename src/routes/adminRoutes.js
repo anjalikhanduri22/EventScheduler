@@ -69,12 +69,11 @@ adminRouter.get("/admin/requests/received", adminAuth, async (req, res) => {
   }
 });
 
-//to view all users in data base(not admin)
+//to view all users in data base
 
 adminRouter.get("/admin/view/allusers", adminAuth, async (req, res) => {
   try {
     const users = await User.find({
-      role: "User",
       //}).populate("fromUserId", USER_SAFE_DATA);
     });
 
@@ -149,7 +148,10 @@ adminRouter.get(
     try {
       const allevents = await Registration.find({
         status: "intrested",
-      });
+      })
+        .populate("eventId", ["title", "location", "date"])
+        .populate("userId", ["name", "email"]);
+
       res.json({
         message: "Data fetched successfully",
         data: allevents,

@@ -50,7 +50,7 @@ router.delete("/:id", adminAuth, async (req, res) => {
 
 router.put("/:id", adminAuth, async (req, res) => {
   const eventId = req.params.id;
-  const { title, date } = req.body;
+  const { title, date, description, location } = req.body;
 
   try {
     //find the event in the database using id
@@ -62,6 +62,8 @@ router.put("/:id", adminAuth, async (req, res) => {
     //update the event properties
     event.date = date;
     event.title = title;
+    event.description = description;
+    event.location = location;
 
     console.log("event updated");
     await event.save();

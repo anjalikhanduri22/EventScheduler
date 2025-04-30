@@ -24,6 +24,11 @@ authRouter.post("/register", async (req, res) => {
     });
 
     const savedUser = await newUser.save(); // Save the user to the database
+    const token = await savedUser.getJWT();
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 8 * 3600000),
+    });
 
     res
       .status(201)

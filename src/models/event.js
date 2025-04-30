@@ -24,7 +24,9 @@ const eventSchema = new mongoose.Schema(
 
     imageUrl: {
       type: String,
-      default: "https://geographyandyou.com/images/user-profile.png", // URL for the event image/banner
+      default:
+        "https://media.licdn.com/dms/image/v2/D4E12AQEpKCf8Mrrlwg/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1662700158263?e=2147483647&v=beta&t=UBGTboG0Et0sRKiODAGmwoJ6x6ejG6Ff0cGtpgkgzHM",
+      set: (v) => (v === "" ? undefined : v),
     },
   },
   { timestamps: true }

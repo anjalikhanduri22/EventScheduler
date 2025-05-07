@@ -7,9 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 
 const cors = require("cors");
 require("dotenv").config();
-
 const express = require("express");
-
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -20,10 +18,8 @@ app.use(
     credentials: true,
   })
 );
-
 app.use("/", authRoutes);
 app.use("/", eventRoutes);
-
 app.use("/", adminRoutes);
 app.use("/", userRoutes);
 

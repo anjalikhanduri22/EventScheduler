@@ -7,7 +7,6 @@ const express = require("express");
 const adminRouter = express.Router();
 
 //to review admin request
-
 adminRouter.post(
   "/request/review/:status/:requestId",
   adminAuth,
@@ -31,11 +30,8 @@ adminRouter.post(
           .status(404)
           .json({ message: "Connection request not found" });
       }
-
       adminRequest.status = status;
-
       const data = await adminRequest.save();
-
       const userId = adminRequest.fromUserId;
       console.log(userId);
       const user = await User.findByIdAndUpdate(userId, { role: "Admin" });
@@ -43,7 +39,6 @@ adminRouter.post(
       if (!user) {
         return { message: "User not found" };
       }
-
       res.json({ message: "Connection request " + status, data });
     } catch (err) {
       res.status(400).send("ERROR: " + err.message);
@@ -52,7 +47,6 @@ adminRouter.post(
 );
 
 //to view all pending admin request
-
 adminRouter.get("/admin/requests/received", adminAuth, async (req, res) => {
   try {
     const adminRequests = await AdminRequest.find({
@@ -70,7 +64,6 @@ adminRouter.get("/admin/requests/received", adminAuth, async (req, res) => {
 });
 
 //to view all users in data base
-
 adminRouter.get("/admin/view/allusers", adminAuth, async (req, res) => {
   try {
     const users = await User.find({
@@ -87,7 +80,6 @@ adminRouter.get("/admin/view/allusers", adminAuth, async (req, res) => {
 });
 
 //to review event booking request
-
 adminRouter.post(
   "/event/review/:status/:registrationId",
   adminAuth,
@@ -121,7 +113,6 @@ adminRouter.post(
 );
 
 //view all users booking details
-
 adminRouter.get("/admin/view/eventsBooking", adminAuth, async (req, res) => {
   try {
     const allevents = await Registration.find({
@@ -140,7 +131,6 @@ adminRouter.get("/admin/view/eventsBooking", adminAuth, async (req, res) => {
 });
 
 //view all pending booking requests
-
 adminRouter.get(
   "/admin/view/pending/eventBookings",
   adminAuth,

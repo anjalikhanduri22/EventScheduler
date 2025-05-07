@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const adminRequestSchema = new mongoose.Schema(
   {
     fromUserId: {
@@ -30,5 +29,4 @@ const adminRequestSchema = new mongoose.Schema(
 );
 
 const AdminRequest = new mongoose.model("AdminRequest", adminRequestSchema);
-
 module.exports = AdminRequest;
